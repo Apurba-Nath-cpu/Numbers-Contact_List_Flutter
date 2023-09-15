@@ -31,6 +31,7 @@ class _EditContactState extends State<EditContact> {
     getData();
   }
 
+  // Get data of a contact
   getData() async {
     setState(() {
       isLoading = true;
@@ -42,7 +43,6 @@ class _EditContactState extends State<EditContact> {
           .get();
 
       postData = postSnap.data()!;
-
     } catch (err) {
       SnackBar(
         content: Text(err.toString()),
@@ -52,6 +52,7 @@ class _EditContactState extends State<EditContact> {
       isLoading = false;
     });
   }
+
   Uint8List? _image;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _numberController = TextEditingController();
@@ -71,6 +72,7 @@ class _EditContactState extends State<EditContact> {
     _relationController.dispose();
   }
 
+  // Select an image
   void selectImage() async {
     Uint8List im = await pickImage(ImageSource.gallery);
     setState(() {
@@ -78,13 +80,9 @@ class _EditContactState extends State<EditContact> {
     });
   }
 
-  void updateContact(
-      String name,
-      String number,
-      String relation,
-      String uid,
-      Uint8List? file
-      ) async {
+  // Update a contact's information
+  void updateContact(String name, String number, String relation, String uid,
+      Uint8List? file) async {
     setState(() {
       _isLoading = true;
     });
@@ -117,18 +115,14 @@ class _EditContactState extends State<EditContact> {
           _image,
         );
         if (res == "success") {
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Posted!'),
-              )
-          );
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Posted!'),
+          ));
           Navigator.of(context).pop();
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(res),
-              )
-          );
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(res),
+          ));
         }
       } catch (err) {
         SnackBar(
@@ -142,15 +136,6 @@ class _EditContactState extends State<EditContact> {
     });
   }
 
-  void signout() async{
-    await AuthMethods().signOut();
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) => const LoginPage(),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     model.User? user = Provider.of<UserProvider>(context).getUser;
@@ -159,19 +144,15 @@ class _EditContactState extends State<EditContact> {
 
     return Scaffold(
       appBar: AppBar(
-        // backgroundColor: Colors.black26,
         centerTitle: false,
-        title: const Text(
-            "Numbers",
+        title: const Text("Numbers",
             style: TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.bold,
               fontFamily: 'Pacifico',
-            )
-        ),
+            )),
       ),
       body: Material(
-        // color: const Color.fromARGB(255, 60, 60, 60),
         child: SizedBox(
           height: Dheight * 0.9,
           child: SingleChildScrollView(
@@ -192,7 +173,9 @@ class _EditContactState extends State<EditContact> {
                     ),
                   ),
                 ),
-                SizedBox(height: Dheight * 0.03,),
+                SizedBox(
+                  height: Dheight * 0.03,
+                ),
                 Material(
                   borderRadius: BorderRadius.circular(40),
                   child: InkWell(
@@ -200,34 +183,37 @@ class _EditContactState extends State<EditContact> {
                     child: Container(
                       child: _image != null
                           ? Material(
-                        borderRadius: BorderRadius.circular(50),
-                        child: CircleAvatar(
-                          radius: 40,
-                          backgroundColor: Colors.greenAccent,
-                          child: CircleAvatar(
-                            radius: 38,
-                            backgroundImage:
-                            MemoryImage(_image!),
-                          ),
-                        ),
-                      )
+                              borderRadius: BorderRadius.circular(50),
+                              child: CircleAvatar(
+                                radius: 40,
+                                backgroundColor: Colors.greenAccent,
+                                child: CircleAvatar(
+                                  radius: 38,
+                                  backgroundImage: MemoryImage(_image!),
+                                ),
+                              ),
+                            )
                           : Material(
-                        borderRadius: BorderRadius.circular(50),
-                        child: postData['profImage'] != "" ? CircleAvatar(
-                          radius: 40,
-                          backgroundImage: NetworkImage(
-                              postData['profImage'] ?? 'https://wallpaperaccess.com/full/2131.jpg'
-                          ),
-                        ) :
-                        const CircleAvatar(
-                          radius: 40,
-                          backgroundImage: AssetImage('assets/imgvid/null_dp.png'),
-                        ),
-                      ),
+                              borderRadius: BorderRadius.circular(50),
+                              child: postData['profImage'] != ""
+                                  ? CircleAvatar(
+                                      radius: 40,
+                                      backgroundImage: NetworkImage(postData[
+                                              'profImage'] ??
+                                          'https://wallpaperaccess.com/full/2131.jpg'),
+                                    )
+                                  : const CircleAvatar(
+                                      radius: 40,
+                                      backgroundImage: AssetImage(
+                                          'assets/imgvid/null_dp.png'),
+                                    ),
+                            ),
                     ),
                   ),
                 ),
-                SizedBox(height: Dheight * 0.06,),
+                SizedBox(
+                  height: Dheight * 0.06,
+                ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextFormField(
@@ -247,7 +233,9 @@ class _EditContactState extends State<EditContact> {
                     onTap: () {},
                   ),
                 ),
-                SizedBox(height: Dheight * 0.03,),
+                SizedBox(
+                  height: Dheight * 0.03,
+                ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextFormField(
@@ -271,7 +259,9 @@ class _EditContactState extends State<EditContact> {
                     onTap: () {},
                   ),
                 ),
-                SizedBox(height: Dheight * 0.03,),
+                SizedBox(
+                  height: Dheight * 0.03,
+                ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextFormField(
@@ -280,7 +270,6 @@ class _EditContactState extends State<EditContact> {
                     // initialValue: postData['relation'],
                     decoration: InputDecoration(
                       hintText: postData['relation'],
-                      // errorText: relation,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
@@ -291,11 +280,15 @@ class _EditContactState extends State<EditContact> {
                     onTap: () {},
                   ),
                 ),
-                SizedBox(height: Dheight * 0.03,),
+                SizedBox(
+                  height: Dheight * 0.03,
+                ),
                 const Divider(
                   thickness: 1.0,
                 ),
-                SizedBox(height: Dheight * 0.06,),
+                SizedBox(
+                  height: Dheight * 0.06,
+                ),
                 Container(
                   height: 40,
                   width: MediaQuery.of(context).size.width * 0.9,
@@ -307,22 +300,23 @@ class _EditContactState extends State<EditContact> {
                   child: InkWell(
                     borderRadius: BorderRadius.circular(100),
                     child: Center(
-                      child: _isLoading ? const CircularProgressIndicator(
-                        color: Colors.white,
-                      ) : Container(
-                        padding: const EdgeInsets.all(10),
-                        child: const Center(child: Text('Update')),
-                      ),
+                      child: _isLoading
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                          : Container(
+                              padding: const EdgeInsets.all(10),
+                              child: const Center(child: Text('Update')),
+                            ),
                     ),
                     onTap: () {
-                      if(canUpdate){
+                      if (canUpdate) {
                         updateContact(
                             _nameController.text,
                             _numberController.text,
                             _relationController.text,
                             user!.uid,
-                            _image
-                        );
+                            _image);
                       }
                     },
                   ),
@@ -337,11 +331,9 @@ class _EditContactState extends State<EditContact> {
         child: FloatingActionButton(
           onPressed: () => Navigator.of(context).pop(),
           elevation: 15,
-          // backgroundColor: Colors.blueGrey[200],
           child: const Icon(Icons.home),
         ),
       ),
     );
   }
 }
-

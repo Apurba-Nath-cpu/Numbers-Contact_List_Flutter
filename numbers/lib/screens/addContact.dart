@@ -25,7 +25,6 @@ class _AddContactState extends State<AddContact> {
   final TextEditingController _relationController = TextEditingController();
 
   bool _isLoading = false;
-  // bool imageChosen = _image != null ? true : false;
   String username = "";
 
   @override
@@ -39,6 +38,7 @@ class _AddContactState extends State<AddContact> {
   bool canPost = true;
 
   @override
+  // Dispose controllers
   void dispose() {
     super.dispose();
     _nameController.dispose();
@@ -46,6 +46,7 @@ class _AddContactState extends State<AddContact> {
     _relationController.dispose();
   }
 
+  // select an Image
   void selectImage() async {
     Uint8List im = await pickImage(ImageSource.gallery);
     setState(() {
@@ -53,32 +54,24 @@ class _AddContactState extends State<AddContact> {
     });
   }
 
-  void postStuff(
-      String name,
-      String number,
-      String relation,
-      String uid,
-      Uint8List? file
-      ) async {
+  // add a Contact
+  void postStuff(String name, String number, String relation, String uid,
+      Uint8List? file) async {
     setState(() {
       _isLoading = true;
     });
     bool contentOk = true;
 
     if (_nameController.text == "") {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please give a name'),
-          )
-      );
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Please give a name'),
+      ));
       contentOk = false;
     }
     if (_numberController.text == "") {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please enter the number'),
-          )
-      );
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Please enter the number'),
+      ));
       contentOk = false;
     }
     if (_relationController.text == "") {
@@ -86,7 +79,6 @@ class _AddContactState extends State<AddContact> {
     }
 
     if (contentOk == false) {
-
     } else {
       try {
         String res = await FirestoreMethods().uploadContact(
@@ -97,42 +89,26 @@ class _AddContactState extends State<AddContact> {
           _image,
         );
         if (res == "success") {
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Posted! Please wait till the record is updated."),
-              )
-          );
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Posted! Please wait till the record is updated."),
+          ));
 
           Navigator.of(context).pop();
-
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(res),
-              )
-          );
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(res),
+          ));
         }
       } catch (err) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(err.toString()),
-            )
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(err.toString()),
+        ));
       }
     }
 
     setState(() {
       _isLoading = false;
     });
-  }
-
-  void signout() async{
-    await AuthMethods().signOut();
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) => const LoginPage(),
-      ),
-    );
   }
 
   @override
@@ -143,19 +119,15 @@ class _AddContactState extends State<AddContact> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          // backgroundColor: Colors.black26,
           centerTitle: false,
-          title: const Text(
-              "Numbers",
+          title: const Text("Numbers",
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Pacifico',
-              )
-          ),
+              )),
         ),
         body: Material(
-          // color: Colors.grey.shade900,
           child: SizedBox(
             height: Dheight * 0.9,
             child: SingleChildScrollView(
@@ -176,7 +148,9 @@ class _AddContactState extends State<AddContact> {
                       ),
                     ),
                   ),
-                  SizedBox(height: Dheight * 0.02,),
+                  SizedBox(
+                    height: Dheight * 0.02,
+                  ),
                   Material(
                     borderRadius: BorderRadius.circular(40),
                     child: InkWell(
@@ -184,33 +158,38 @@ class _AddContactState extends State<AddContact> {
                       child: Container(
                         child: _image != null
                             ? Material(
-                          borderRadius: BorderRadius.circular(50),
-                          child: CircleAvatar(
-                            radius: Dheight * 0.1,
-                            backgroundColor: Colors.greenAccent,
-                            child: CircleAvatar(
-                              radius: Dheight * 0.09,
-                              backgroundImage:
-                              MemoryImage(_image!),
-                            ),
-                          ),
-                        )
+                                borderRadius: BorderRadius.circular(50),
+                                child: CircleAvatar(
+                                  radius: Dheight * 0.1,
+                                  backgroundColor: Colors.greenAccent,
+                                  child: CircleAvatar(
+                                    radius: Dheight * 0.09,
+                                    backgroundImage: MemoryImage(_image!),
+                                  ),
+                                ),
+                              )
                             : Material(
-                          borderRadius: BorderRadius.circular(50),
-                          child: CircleAvatar(
-                            radius: Dheight * 0.05,
-                            backgroundImage: const AssetImage(
-                                'assets/imgvid/null_dp.png'),
-                          ),
-                        ),
+                                borderRadius: BorderRadius.circular(50),
+                                child: CircleAvatar(
+                                  radius: Dheight * 0.05,
+                                  backgroundImage: const AssetImage(
+                                      'assets/imgvid/null_dp.png'),
+                                ),
+                              ),
                       ),
                     ),
                   ),
-                  _image == null ? Container(
-                    margin: EdgeInsets.symmetric(vertical: Dheight * 0.01),
-                    child: const Text("Chose a profile picture (optional)"),
-                  ) : Container(),
-                  SizedBox(height: Dheight * 0.02,),
+                  _image == null
+                      ? Container(
+                          margin:
+                              EdgeInsets.symmetric(vertical: Dheight * 0.01),
+                          child:
+                              const Text("Chose a profile picture (optional)"),
+                        )
+                      : Container(),
+                  SizedBox(
+                    height: Dheight * 0.02,
+                  ),
                   const SizedBox(
                     height: 5,
                   ),
@@ -232,7 +211,9 @@ class _AddContactState extends State<AddContact> {
                       onTap: () {},
                     ),
                   ),
-                  SizedBox(height: Dheight * 0.02,),
+                  SizedBox(
+                    height: Dheight * 0.02,
+                  ),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: TextField(
@@ -255,7 +236,9 @@ class _AddContactState extends State<AddContact> {
                       onTap: () {},
                     ),
                   ),
-                  SizedBox(height: Dheight * 0.02,),
+                  SizedBox(
+                    height: Dheight * 0.02,
+                  ),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: TextField(
@@ -263,7 +246,6 @@ class _AddContactState extends State<AddContact> {
                       controller: _relationController,
                       decoration: InputDecoration(
                         hintText: "Relation (optional)",
-                        // errorText: relation,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
@@ -277,7 +259,9 @@ class _AddContactState extends State<AddContact> {
                   const Divider(
                     thickness: 1.0,
                   ),
-                  SizedBox(height: Dheight * 0.04,),
+                  SizedBox(
+                    height: Dheight * 0.04,
+                  ),
                   Container(
                     height: 40,
                     width: MediaQuery.of(context).size.width * 0.9,
@@ -289,36 +273,35 @@ class _AddContactState extends State<AddContact> {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(100),
                       child: Center(
-                        child: _isLoading ? const CircularProgressIndicator(
-                          color: Colors.white,
-                        ) : Container(
-                          padding: const EdgeInsets.all(10),
-                          child: const Center(child: Text('Post')),
-                        ),
+                        child: _isLoading
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : Container(
+                                padding: const EdgeInsets.all(10),
+                                child: const Center(child: Text('Post')),
+                              ),
                       ),
                       onTap: () async {
                         setState(() {
-                          if(_nameController.text.isEmpty){
+                          if (_nameController.text.isEmpty) {
                             name = "Name can't be empty";
                             canPost = false;
-                          }
-                          else if(_numberController.text.isEmpty){
+                          } else if (_numberController.text.isEmpty) {
                             number = "Number can't be empty";
                             canPost = false;
-                          }
-                          else{
+                          } else {
                             canPost = true;
                           }
                         });
 
-                        if(canPost){
+                        if (canPost) {
                           postStuff(
                               _nameController.text,
                               _numberController.text,
                               _relationController.text,
                               user!.uid,
-                              _image
-                          );
+                              _image);
                         }
                       },
                     ),
@@ -333,7 +316,6 @@ class _AddContactState extends State<AddContact> {
           child: FloatingActionButton(
             onPressed: () => Navigator.of(context).pop(),
             elevation: 15,
-            // backgroundColor: Colors.blueGrey[200],
             child: const Icon(Icons.home),
           ),
         ),
@@ -341,4 +323,3 @@ class _AddContactState extends State<AddContact> {
     );
   }
 }
-

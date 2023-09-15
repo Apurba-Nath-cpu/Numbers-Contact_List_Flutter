@@ -10,6 +10,7 @@ class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  // Get user information if required.
   Future<model.User> getUserDetails() async {
     User? currentUser = _auth.currentUser;
 
@@ -19,7 +20,7 @@ class AuthMethods {
     return model.User.fromSnap(snap);
   }
 
-  // sign up user
+  // Sign up user
   Future<String> signUpUser({
     required String email,
     required String password,
@@ -59,14 +60,6 @@ class AuthMethods {
             .doc(cred.user!.uid)
             .set(user.toJson());
         print("Out-if");
-        // await _firestore.collection('users').add({
-        //   'username': username,
-        //   'uid': cred.user!.uid,
-        //   'email': email,
-        //   'bio': bio,
-        //   'followers': [],
-        //   'following': [],
-        // });
 
         res = "success";
       }
@@ -76,7 +69,7 @@ class AuthMethods {
     return res;
   }
 
-  // logging user
+  // Log in user
 
   Future<String> loginUser({
     required String email,
@@ -92,13 +85,7 @@ class AuthMethods {
       } else {
         res = "Please enter all the fields";
       }
-    }
-    // on FirebaseAuthException catch (err){
-    //   if(err.code == 'user-not-found'){
-    //
-    //   }
-    // }
-    catch (err) {
+    } catch (err) {
       res = err.toString();
     }
     print(res);

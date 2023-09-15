@@ -20,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   bool _obscurePassword = true;
   bool _isLoading = false;
 
+  // Login user
   void loginUser() async {
     setState(() {
       _isLoading = true;
@@ -32,40 +33,35 @@ class _LoginPageState extends State<LoginPage> {
       _isLoading = false;
     });
     if (res != 'success') {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(res),
-          )
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(res),
+      ));
     } else {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => const ResponsiveLayout(
-            webScreenLayout: WebScreenLayout(),
-            mobileScreenLayout: MobileScreenLayout(),
-          )));
+                webScreenLayout: WebScreenLayout(),
+                mobileScreenLayout: MobileScreenLayout(),
+              )));
     }
   }
 
+  // Send password reset email to the user
   Future<void> sendPasswordResetEmail() async {
-    if(_emailController.text == "") {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Please enter your email to reset your password."),
-          )
-      );
+    if (_emailController.text == "") {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Please enter your email to reset your password."),
+      ));
     }
     try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: _emailController.text);
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Password reset email sent'),
-          )
-      );
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: _emailController.text);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Password reset email sent'),
+      ));
     } catch (e) {
-      print(e);  // Print the error message if there's an error
+      print(e); // Print the error message if there's an error
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -93,14 +89,12 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Title
-                    const Text(
-                        "Numbers",
-                      style: TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Pacifico',
-                      )
-                    ),
+                    const Text("Numbers",
+                        style: TextStyle(
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Pacifico',
+                        )),
                     SizedBox(
                       height: Dheight * 0.06,
                     ),
@@ -134,7 +128,8 @@ class _LoginPageState extends State<LoginPage> {
                         labelText: 'Email address',
                         border: const OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade900, width: 2.0),
+                          borderSide: BorderSide(
+                              color: Colors.grey.shade900, width: 2.0),
                         ),
                       ),
                     ),
@@ -157,11 +152,14 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade900, width: 2.0),
+                          borderSide: BorderSide(
+                              color: Colors.grey.shade900, width: 2.0),
                         ),
                       ),
                     ),
-                    SizedBox(height: Dheight * 0.025,),
+                    SizedBox(
+                      height: Dheight * 0.025,
+                    ),
                     // Remember me and forgot password
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -179,27 +177,33 @@ class _LoginPageState extends State<LoginPage> {
                     ElevatedButton(
                       onPressed: () => loginUser(),
                       style: ElevatedButton.styleFrom(
-                        padding:
-                        EdgeInsets.symmetric(horizontal: Dwidth * 0.25, vertical: Dheight * 0.02),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: Dwidth * 0.25,
+                            vertical: Dheight * 0.02),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(Dheight * 0.04),
                         ),
                       ),
-                      child: _isLoading ? const CircularProgressIndicator() : const Text('Log in'),
+                      child: _isLoading
+                          ? const CircularProgressIndicator()
+                          : const Text('Log in'),
                     ),
-                    SizedBox(height: Dheight * 0.016,),
+                    SizedBox(
+                      height: Dheight * 0.016,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text("New user ? "),
                         GestureDetector(
                           child: const Text(
-                              "Sign up!",
+                            "Sign up!",
                             style: TextStyle(color: Colors.blue),
                           ),
-                          onTap: () => Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) => const SignUp(),)
-                          ),
+                          onTap: () => Navigator.of(context)
+                              .pushReplacement(MaterialPageRoute(
+                            builder: (context) => const SignUp(),
+                          )),
                         ),
                       ],
                     )
@@ -220,8 +224,10 @@ class WaveClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     Path path = Path();
     path.lineTo(0, size.height);
-    path.quadraticBezierTo(size.width / 4, size.height - 40, size.width / 2, size.height - 20);
-    path.quadraticBezierTo(size.width * 3 / 4, size.height, size.width, size.height - 30);
+    path.quadraticBezierTo(
+        size.width / 4, size.height - 40, size.width / 2, size.height - 20);
+    path.quadraticBezierTo(
+        size.width * 3 / 4, size.height, size.width, size.height - 30);
     path.lineTo(size.width, 0);
     path.close();
 

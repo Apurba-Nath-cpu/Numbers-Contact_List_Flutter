@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// Model for Post - Contact(name, number, relation, uid, photoUrl, postId, datePublished)
 class Post {
   final String name;
   final String number;
@@ -20,14 +21,14 @@ class Post {
   });
 
   Map<String, dynamic> toJson() => {
-    'name': name,
-    'number': number,
-    'relation': relation,
-    'uid': uid,
-    'profImage': photoUrl,
-    'postId': postId,
-    'datePublished': datePublished,
-  };
+        'name': name,
+        'number': number,
+        'relation': relation,
+        'uid': uid,
+        'profImage': photoUrl,
+        'postId': postId,
+        'datePublished': datePublished,
+      };
 
   static Post fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;

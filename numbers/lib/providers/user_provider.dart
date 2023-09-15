@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:numbers/resources/auth_methods.dart';
 import '../models/user.dart';
 
+// Provider for User's state management
 class UserProvider with ChangeNotifier {
   User? _user;
 

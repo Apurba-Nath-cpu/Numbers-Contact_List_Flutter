@@ -7,13 +7,10 @@ import 'package:numbers/responsive/responsive_layout.dart';
 import 'package:numbers/responsive/web_screen_layout.dart';
 import 'package:numbers/screens/loginPage.dart';
 import 'package:numbers/utils/utils.dart';
-import 'package:numbers/widgets/loginCard.dart';
-import 'package:numbers/widgets/signupCard.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:velocity_x/velocity_x.dart';
 import 'package:image_picker/image_picker.dart';
 
 void main() async {
@@ -29,39 +26,38 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (_) => UserProvider(),
-          ),
-        ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: StreamBuilder(
-              stream: FirebaseAuth.instance.authStateChanges(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                      child:
-                      CircularProgressIndicator()); // Or your own loading widget
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  // Checking if user is null
-                  if (snapshot.data == null) {
-                    return const LoginPage();
-                  } else {
-                    return const ResponsiveLayout(
-                      webScreenLayout: WebScreenLayout(),
-                      mobileScreenLayout: MobileScreenLayout(),
-                    );
-                  }
-                }
-              }),
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => UserProvider(),
         ),
-      );
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                    child:
+                        CircularProgressIndicator()); // Or your own loading widget
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                // Checking if user is null
+                if (snapshot.data == null) {
+                  return const LoginPage();
+                } else {
+                  return const ResponsiveLayout(
+                    webScreenLayout: WebScreenLayout(),
+                    mobileScreenLayout: MobileScreenLayout(),
+                  );
+                }
+              }
+            }),
+      ),
+    );
   }
 }

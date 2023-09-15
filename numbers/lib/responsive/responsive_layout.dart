@@ -2,7 +2,6 @@ import 'package:numbers/providers/user_provider.dart';
 import 'package:numbers/utils/global_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 class ResponsiveLayout extends StatefulWidget {
   final Widget webScreenLayout;
@@ -19,26 +18,22 @@ class ResponsiveLayout extends StatefulWidget {
 
 class _ResponsiveLayoutState extends State<ResponsiveLayout> {
   @override
-
-  void initState(){
+  void initState() {
     super.initState();
     addData();
   }
 
   addData() async {
-    UserProvider _userProvider = Provider.
-      of(context, listen: false);
+    UserProvider _userProvider = Provider.of(context, listen: false);
     await _userProvider.refreshUser();
   }
 
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-        builder: (context, constraints){
-          if(constraints.maxWidth > webScreenSize){
-            return widget.webScreenLayout;
-          }
-          return widget.mobileScreenLayout;
-        }
-    );
+    return LayoutBuilder(builder: (context, constraints) {
+      if (constraints.maxWidth > webScreenSize) {
+        return widget.webScreenLayout;
+      }
+      return widget.mobileScreenLayout;
+    });
   }
 }

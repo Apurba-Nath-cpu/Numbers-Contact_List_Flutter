@@ -1,7 +1,5 @@
 import 'package:numbers/providers/user_provider.dart';
-import 'package:numbers/screens/feedScreen.dart';
 import 'package:numbers/screens/home.dart';
-import 'package:numbers/screens/uploadStuff.dart';
 import 'package:numbers/models/user.dart' as model;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,7 +25,6 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     pageController = PageController();
   }
 
-
   @override
   void dispose() {
     super.dispose();
@@ -44,7 +41,9 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     return Scaffold(
       body: Material(
         child: Center(
-          child: user == null ? const CircularProgressIndicator() : Home(uid: user!.uid),
+          child: user == null
+              ? const CircularProgressIndicator()
+              : Home(uid: user!.uid),
         ),
       ),
     );
